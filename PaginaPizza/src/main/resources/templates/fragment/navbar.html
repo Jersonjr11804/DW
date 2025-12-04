@@ -1,7 +1,7 @@
 
    <!-- Navbar de inicio -->
    <!-- Navbar de inicio -->
-<nav class="navbar">
+<nav class="navbar"  th:fragment="navbar">
     <div class="navbar-brand">
         <a th:href="@{/}">Pizza Exploit</a>
     </div>
@@ -24,14 +24,3 @@
             <a th:href="@{/logout}" class="btn-nav outline">Cerrar sesión</a>
         </div>
     </div>
-</nav>
-    <div th:fragment="navbar">
-    <nav>
-        <ul>
-            <li><a href="/inicio">Inicio</a></li>
-            <li><a href="/misionvision">Misión y Visión</a></li>
-            <li><a href="/contacto">Contacto</a></li>
-        </ul>
-    </nav>
-</div>
-</nav>
