@@ -33,12 +33,21 @@ public class CarritoService {
         if (itemExistente != null) {
             // Si existe, aumentar la cantidad
             itemExistente.setCantidad(itemExistente.getCantidad() + cantidad);
+            // Asegurar que tiene el precio unitario
+            if (itemExistente.getPrecioUnitario() == 0) {
+                itemExistente.setPrecioUnitario(opcion.getPrecioPorTamano(tamano));
+            }
             if (usuarioEmail != null) {
                 itemCarritoRepository.save(itemExistente);
             }
         } else {
             // Si no existe, crear nuevo item
-            ItemCarrito nuevoItem = new ItemCarrito(opcion,null, tamano, cantidad, 0.0, 0.0, null);
+            ItemCarrito nuevoItem = new ItemCarrito();
+            nuevoItem.setOpcion(opcion);
+            nuevoItem.setNombre(opcion.getNombre());
+            nuevoItem.setTamano(tamano);
+            nuevoItem.setPrecioUnitario(opcion.getPrecioPorTamano(tamano));
+            nuevoItem.setCantidad(cantidad);
             if (usuarioEmail != null) {
                 nuevoItem.setUsuarioEmail(usuarioEmail);
                 itemCarritoRepository.save(nuevoItem);
@@ -59,10 +68,24 @@ public class CarritoService {
 
     // Obtener todos los items del carrito
     public List<ItemCarrito> obtenerItems(String usuarioEmail) {
+        List<ItemCarrito> items;
         if (usuarioEmail != null) {
-            return itemCarritoRepository.findByUsuarioEmail(usuarioEmail);
+            items = itemCarritoRepository.findByUsuarioEmail(usuarioEmail);
+        } else {
+            items = new ArrayList<>(itemsCarrito);
         }
-        return new ArrayList<>(itemsCarrito);
+        
+        // Asegurar que todos los items tengan el precioUnitario correcto
+        for (ItemCarrito item : items) {
+            if (item.getPrecioUnitario() == 0 && item.getOpcion() != null) {
+                item.setPrecioUnitario(item.getOpcion().getPrecioPorTamano(item.getTamano()));
+                if (usuarioEmail != null) {
+                    itemCarritoRepository.save(item);
+                }
+            }
+        }
+        
+        return items;
     }
 
     // Eliminar item por ID

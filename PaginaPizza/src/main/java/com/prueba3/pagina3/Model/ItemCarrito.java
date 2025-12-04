@@ -64,7 +64,11 @@ public class ItemCarrito {
         actualizarSubtotal();
     }
 
-    public double getSubtotal() { return subtotal; }
+    public double getSubtotal() { 
+        // Recalcular el subtotal cada vez que se accede, asegurando que siempre sea correcto
+        this.subtotal = this.precioUnitario * this.cantidad;
+        return this.subtotal;
+    }
     public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
 
 
