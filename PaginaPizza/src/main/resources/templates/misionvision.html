@@ -11,10 +11,70 @@
     <!-- Incluir el navbar -->
     <div th:replace="fragment/navbar :: navbar"></div>
 
-    <h1>Misión</h1>
-    <p>Nuestra misión es ofrecer pizzas artesanales con ingredientes frescos y de calidad.</p>
+    <section class="mision-vision">
+    <div class="bloque">
+        <h1>Misión</h1>
+        <p>
+            Brindar a nuestros clientes una experiencia gastronómica única, elaborando pizzas artesanales con 
+            ingredientes frescos, seleccionados con rigor y preparados con pasión. Nos comprometemos a mantener 
+            la excelencia en cada detalle, ofreciendo calidad, calidez y respeto en cada servicio.
+        </p>
+    </div>
 
-    <h1>Visión</h1>
-    <p>Ser reconocidos como la pizzería líder en innovación y sabor a nivel nacional.</p>
+    <div class="bloque">
+        <h1>Visión</h1>
+        <p>
+            Convertirnos en la pizzería referente a nivel nacional, reconocida por la innovación en sabores, 
+            el respeto por la tradición y la creación de un espacio donde cada visita se transforme en un 
+            momento memorable de confianza y satisfacción.
+        </p>
+    </div>
+</section>
+
+<style>
+    .mision-vision {
+        max-width: 1000px;
+        margin: 50px auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 20px;
+    }
+
+    .mision-vision .bloque {
+        background: #fff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .mision-vision .bloque:hover {
+        transform: translateY(-5px);
+    }
+
+    .mision-vision h1 {
+        font-size: 1.8em;
+        color: #b22222; /* rojo vino elegante */
+        margin-bottom: 15px;
+        text-align: center;
+        border-bottom: 2px solid #b22222;
+        padding-bottom: 8px;
+    }
+
+    .mision-vision p {
+        font-size: 1.1em;
+        line-height: 1.8;
+        text-align: justify;
+        color: #444;
+    }
+
+    /* Responsive: en pantallas pequeñas se apilan */
+    @media (max-width: 768px) {
+        .mision-vision {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 </body>
 </html>
