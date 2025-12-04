@@ -1,4 +1,4 @@
-package com.prueba3.pagina3.Controlador;
+package com.prueba3.pagina3.Controller;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
