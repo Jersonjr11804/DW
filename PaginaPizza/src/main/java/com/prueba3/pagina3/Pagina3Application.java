@@ -8,6 +8,8 @@ public class Pagina3Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Pagina3Application.class, args);
+		System.out.println("Aplicación iniciada correctamente.");
 	}
+
 
 }
