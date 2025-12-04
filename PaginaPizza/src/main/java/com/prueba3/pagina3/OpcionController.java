@@ -17,7 +17,7 @@ public class OpcionController {
         this.carritoService = carritoService;
     }
 
-    @GetMapping("/inicio") // URL final: /opciones/inicio
+    @GetMapping("/") // URL final: /opciones/inicio
     public String mostrarOpciones(Model model, HttpSession session) {
         model.addAttribute("opciones", opcionService.listarOpciones());
 
