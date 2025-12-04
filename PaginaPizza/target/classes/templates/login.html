@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - Pizzería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style/login.css}">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white text-center">
+                        <h3>Iniciar Sesión</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Mensaje de error si hay -->
+                        <div th:if="${error}" class="alert alert-danger" role="alert">
+                            <span th:text="${error}"></span>
+                        </div>
+                        
+                        <!-- Mensaje de éxito si viene del registro -->
+                        <div th:if="${mensaje}" class="alert alert-success" role="alert">
+                            <span th:text="${mensaje}"></span>
+                        </div>
+                        
+                        <form th:action="@{/login}" method="post">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Iniciar Sesión</button>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center mt-3">
+                            <p>¿No tienes cuenta? <a th:href="@{/registro}" class="text-decoration-none">Regístrate aquí</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Informativo -->
+    <footer class="footer">
+        <div class="footer-content">
+            <!-- Información del Restaurante -->
+            <div class="footer-section">
+                <h3>Pizza Exploit</h3>
+                <p>Desde 2025, ofrecemos las mejores pizzas artesanales de la ciudad con ingredientes frescos y recetas tradicionales que han pasado de generación en generación.</p>
+                <p><strong>Especialidades:</strong></p>
+                <ul>
+                    <li>• Pizzas artesanales</li>
+                    <li>• Masa fresca diaria</li>
+                    <li>• Ingredientes premium</li>
+                    <li>• Recetas familiares</li>
+                </ul>
+            </div>
+
+            <!-- Información de Contacto -->
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <div class="contact-item">
+                    <p>Calle Calle 78B No. 72A - 220, Barrio Altamira<br>Medellín, Colombia</p>
+                </div>
+                <div class="contact-item">
+                    <span>📞</span>
+                    <p>+57 (604) 123-4567</p>
+                </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <p>+57 300 123 4567</p>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <p><a href="mailto:info@pizzas.com">info@pizzas.com</a></p>
+                </div>
+            </div>
+
+            <!-- Horarios de Atención -->
+            <div class="footer-section">
+                <h3>🕒 Horarios</h3>
+                <ul>
+                    <li><strong>Lunes - Jueves:</strong><br>11:00 AM - 10:00 PM</li>
+                    <li><strong>Viernes - Sábado:</strong><br>11:00 AM - 11:00 PM</li>
+                    <li><strong>Domingo:</strong><br>12:00 PM - 9:00 PM</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>🚚 Domicilios:</strong></p>
+                <p>Disponibles en toda la ciudad<br>Tiempo estimado: 30-45 min</p>
+            </div>
+
+            <!-- Redes Sociales y Enlaces -->
+            <div class="footer-section">
+                <h3>🌐 Síguenos</h3>
+                <p>Mantente conectado con nosotros y no te pierdas nuestras promociones especiales:</p>
+                <div class="social-links">
+                    <a href="https://facebook.com/" title="Facebook">📘</a>
+                    <a href="https://instagram.com/" title="Instagram">📷</a>
+                    <a href="https://twitter.com/" title="Twitter">🐦</a>
+                    <a href="https://whatsapp.com/" title="WhatsApp">💬</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie del Footer -->
+        <div class="footer-bottom">
+            <p>&copy; 2025 Pizza Exploit. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seleccionar Pizza - Pizzería</title>
+    <link rel="stylesheet" th:href="@{/style/seleccion.css}">
+</head>
+<body>
+    <!-- Navbar de inicio -->
+   <!-- Navbar de inicio -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/}">Pizza Exploit</a>
+    </div>
+    <div class="navbar-actions">
+        <!-- Enlace único -->
+        <a th:href="@{/misionvision}" class="btn-nav">Misión/Visión</a>
+
+        <!-- Carrito -->
+        <a th:href="@{/carrito}" class="btn-nav">
+            🛒 Carrito (<span th:text="${cantidadCarrito}">0</span>)
+        </a>
+
+        <!-- Opciones de sesión -->
+        <div th:if="${session.usuarioEmail == null}">
+            <a th:href="@{/login}" class="btn-nav outline">Iniciar sesión</a>
+            <a th:href="@{/registro}" class="btn-nav outline">Registrarse</a>
+        </div>
+        <div th:if="${session.usuarioEmail != null}">
+            <span class="usuario-saludo" th:text="'Hola, ' + ${session.usuarioNombre}"></span>
+            <a th:href="@{/logout}" class="btn-nav outline">Cerrar sesión</a>
+        </div>
+    </div>
+</nav>
+    <div class="header">
+        <h1>Bienvenidos a Pizza Exploit</h1>
+        <p>Selecciona tu pizza favorita, elige el tamaño y agrégala al carrito</p>
+    </div>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${mensaje}" class="mensaje success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="mensaje error" th:text="${error}"></div>
+
+    <div class="contenedor">
+        <div class="opcion" th:each="opcion : ${opciones}">
+            <img th:src="${opcion.imagen}" th:alt="${opcion.nombre}" 
+                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlbiBubyBkaXNwb25pYmxlPC90ZXh0Pjwvc3ZnPg=='">
+            
+            <h3 th:text="${opcion.nombre}"></h3>
+            
+            <!-- Descripción de la pizza -->
+            <p class="descripcion" th:text="${opcion.descripcion}"></p>
+            
+            <div class="precios">
+                <div class="precio-item">
+                    <span>Pequeña (4 porciones):</span>
+                    <strong th:text="'$' + ${#numbers.formatInteger(opcion.precioPequena, 0, 'COMMA')}"></strong>
+                </div>
+                <div class="precio-item">
+                    <span>Mediana (6 porciones):</span>
+                    <strong th:text="'$' + ${#numbers.formatInteger(opcion.precioMediana, 0, 'COMMA')}"></strong>
+                </div>
+                <div class="precio-item">
+                    <span>Grande (8 porciones):</span>
+                    <strong th:text="'$' + ${#numbers.formatInteger(opcion.precioGrande, 0, 'COMMA')}"></strong>
+                </div>
+            </div>
+
+            <form th:action="@{/agregar}" method="post">
+                <input type="hidden" name="opcionId" th:value="${opcion.id}">
+                
+                <div class="form-group">
+                    <label for="tamano">Tamaño:</label>
+                    <select name="tamano" required>
+                        <option value="">Seleccionar tamaño</option>
+                        <option value="pequena">Pequeña</option>
+                        <option value="mediana">Mediana</option>
+                        <option value="grande">Grande</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" name="cantidad" min="1" max="10" value="1" required>
+                </div>
+
+                <button type="submit">Agregar al Carrito</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Informativo -->
+    <footer class="footer">
+        <div class="footer-content">
+            <!-- Información del Restaurante -->
+            <div class="footer-section">
+                <h3>Pizza Exploit</h3>
+                <p>Desde 2025, ofrecemos las mejores pizzas artesanales de la ciudad con ingredientes frescos y recetas tradicionales que han pasado de generación en generación.</p>
+                <p><strong>Especialidades:</strong></p>
+                <ul>
+                    <li>• Pizzas artesanales</li>
+                    <li>• Masa fresca diaria</li>
+                    <li>• Ingredientes premium</li>
+                    <li>• Recetas familiares</li>
+                </ul>
+            </div>
+
+            <!-- Información de Contacto -->
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <div class="contact-item">
+                    <p>Calle 78B No. 72A - 220, Barrio Altamira<br>Medellín, Colombia</p>
+                </div>
+                <div class="contact-item">
+                    <span>📞</span>
+                    <p>+57 (604) 123-4567</p>
+                </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <p>+57 300 123 4567</p>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <p><a href="mailto:info@pizzas.com">info@pizzas.com</a></p>
+                </div>
+            </div>
+
+            <!-- Horarios de Atención -->
+            <div class="footer-section">
+                <h3>🕒 Horarios</h3>
+                <ul>
+                    <li><strong>Lunes - Jueves:</strong><br>11:00 AM - 10:00 PM</li>
+                    <li><strong>Viernes - Sábado:</strong><br>11:00 AM - 11:00 PM</li>
+                    <li><strong>Domingo:</strong><br>12:00 PM - 9:00 PM</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>🚚 Domicilios:</strong></p>
+                <p>Disponibles en toda la ciudad<br>Tiempo estimado: 30-45 min</p>
+            </div>
+
+            <!-- Redes Sociales y Enlaces -->
+            <div class="footer-section">
+                <h3>🌐 Síguenos</h3>
+                <p>Mantente conectado con nosotros y no te pierdas nuestras promociones especiales:</p>
+                <div class="social-links">
+                    <a href="https://facebook.com/" title="Facebook">📘</a>
+                    <a href="https://instagram.com/" title="Instagram">📷</a>
+                    <a href="https://twitter.com/" title="Twitter">🐦</a>
+                    <a href="https://whatsapp.com/" title="WhatsApp">💬</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie del Footer -->
+        <div class="footer-bottom">
+            <p>&copy; 2025 Pizza Exploit. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+</html>

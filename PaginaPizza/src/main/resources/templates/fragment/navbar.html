@@ -1,0 +1,37 @@
+
+   <!-- Navbar de inicio -->
+   <!-- Navbar de inicio -->
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/}">Pizza Exploit</a>
+    </div>
+    <div class="navbar-actions">
+        <!-- Enlace único -->
+        <a th:href="@{/misionvision}" class="btn-nav">Misión/Visión</a>
+
+        <!-- Carrito -->
+        <a th:href="@{/carrito}" class="btn-nav">
+            🛒 Carrito (<span th:text="${cantidadCarrito}">0</span>)
+        </a>
+
+        <!-- Opciones de sesión -->
+        <div th:if="${session.usuarioEmail == null}">
+            <a th:href="@{/login}" class="btn-nav outline">Iniciar sesión</a>
+            <a th:href="@{/registro}" class="btn-nav outline">Registrarse</a>
+        </div>
+        <div th:if="${session.usuarioEmail != null}">
+            <span class="usuario-saludo" th:text="'Hola, ' + ${session.usuarioNombre}"></span>
+            <a th:href="@{/logout}" class="btn-nav outline">Cerrar sesión</a>
+        </div>
+    </div>
+</nav>
+    <div th:fragment="navbar">
+    <nav>
+        <ul>
+            <li><a href="/inicio">Inicio</a></li>
+            <li><a href="/misionvision">Misión y Visión</a></li>
+            <li><a href="/contacto">Contacto</a></li>
+        </ul>
+    </nav>
+</div>
+</nav>
