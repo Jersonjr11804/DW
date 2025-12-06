@@ -1,0 +1,21 @@
+
+  <nav th:fragment="navbar" class="navbar">
+    <div class="navbar-brand">
+        <a th:href="@{/}">Pizza Exploit</a>
+    </div>
+    <div class="navbar-actions">
+        <a th:href="@{/misionvision}" class="btn-nav">Misión/Visión/valores</a>
+        <a th:href="@{/carrito}" class="btn-nav">
+            🛒 Carrito (<span th:text="${cantidadCarrito}">0</span>)
+        </a>
+
+        <div th:if="${session.usuarioEmail == null}">
+            <a th:href="@{/login}" class="btn-nav outline">Iniciar sesión</a>
+            <a th:href="@{/registro}" class="btn-nav outline">Registrarse</a>
+        </div>
+        <div th:if="${session.usuarioEmail != null}">
+            <span class="usuario-saludo" th:text="'Hola, ' + ${session.usuarioNombre}"></span>
+            <a th:href="@{/logout}" class="btn-nav outline">Cerrar sesión</a>
+        </div>
+    </div>
+</nav>

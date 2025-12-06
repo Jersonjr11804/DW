@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago - Pizzería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>💳 Selección de Método de Pago</h3>
+                    <p class="mb-0">Usuario: <span th:text="${usuarioEmail}"></span></p>
+                </div>
+                <div class="card-body">
+
+                    <!-- Resumen del carrito -->
+                    <h4 class="mb-3">Resumen del Carrito</h4>
+                    <div th:each="item : ${itemsCarrito}" class="item-carrito border rounded p-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 text-center">
+                                <img th:src="${item.opcion.imagen}" th:alt="${item.opcion.nombre}"
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;"
+                                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2RkZCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM3Nzc3NzciPkltYWdlPC90ZXh0Pjwvc3ZnPg=='">
+                            </div>
+                            <div class="col-md-6">
+                                <h6 th:text="${item.opcion.nombre}" class="mb-1"></h6>
+                                <small class="text-muted">
+                                    Tamaño: <span th:text="${item.tamano}" class="text-capitalize"></span> |
+                                    Cantidad: <span th:text="${item.cantidad}"></span>
+                                </small>
+                            </div>
+                            <div class="col-md-2 text-center">
+                                <small class="text-muted">Precio unitario:</small><br>
+                                <span th:text="'$' + ${#numbers.formatInteger(item.precioUnitario, 0, 'COMMA')}"></span>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <small class="text-muted">Subtotal:</small><br>
+                                <strong class="text-success" th:text="'$' + ${#numbers.formatInteger(item.subtotal, 0, 'COMMA')}"></strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-top pt-3 mt-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <h5>Total a pagar:</h5>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <h4 class="text-success" th:text="'$' + ${#numbers.formatInteger(totalCarrito, 0, 'COMMA')}"></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selección de método de pago -->
+                    <form th:action="@{/pago}" method="post" class="mt-4">
+                        <h4 class="mb-3">Método de Pago</h4>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="metodo" id="pagoTransferencia" value="Transferencia" checked>
+                            <label class="form-check-label" for="pagoTransferencia">
+                                Transferencia bancaria
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="radio" name="metodo" id="pagoTarjeta" value="Tarjeta">
+                            <label class="form-check-label" for="pagoTarjeta">
+                                Tarjeta (no se valida contra emisores)
+                            </label>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="radio" name="metodo" id="pagoEfectivo" value="Efectivo">
+                            <label class="form-check-label" for="pagoEfectivo">
+                                Efectivo
+                            </label>
+                        </div>
+
+                        <!-- Campos para pago con tarjeta -->
+                        <div id="tarjetaCampos" class="mt-4" style="display: none;">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label for="numeroTarjeta" class="form-label">Número de tarjeta</label>
+                                    <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="4111 1111 1111 1111">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="nombreTarjeta" class="form-label">Nombre en la tarjeta</label>
+                                    <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" placeholder="Nombre y Apellido">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="fechaTarjeta" class="form-label">Expiración (MM/AA)</label>
+                                    <input type="text" class="form-control" id="fechaTarjeta" name="fechaTarjeta" placeholder="12/27">
+                                </div>
+                            </div>
+                            <small class="text-muted d-block mt-2">No se realiza validación real de la tarjeta.</small>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a th:href="@{/carrito}" class="btn btn-secondary btn-lg w-100">
+                                        <i class="fas fa-arrow-left"></i> Volver al Carrito
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-success btn-lg w-100">
+                                        <i class="fas fa-check"></i> Confirmar Pago y Pedido
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const radioTarjeta = document.getElementById('pagoTarjeta');
+    const radioTransferencia = document.getElementById('pagoTransferencia');
+    const radioEfectivo = document.getElementById('pagoEfectivo');
+    const tarjetaCampos = document.getElementById('tarjetaCampos');
+
+    function toggleTarjetaCampos() {
+        if (radioTarjeta.checked) {
+            tarjetaCampos.style.display = 'block';
+        } else {
+            tarjetaCampos.style.display = 'none';
+        }
+    }
+
+    [radioTarjeta, radioTransferencia, radioEfectivo].forEach(r => r.addEventListener('change', toggleTarjetaCampos));
+    toggleTarjetaCampos();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

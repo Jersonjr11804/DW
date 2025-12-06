@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito de Compras - Pizzería</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/style/carrito.css}">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h3>🛒 Tu Carrito de Compras</h3>
+                        <p class="mb-0" th:if="${!carritoVacio}">
+                            <span th:text="${cantidadItems}"></span> item(s) en tu carrito
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <!-- Mensajes de éxito o error -->
+                        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+                            <span th:text="${mensaje}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <span th:text="${error}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
+                        <!-- Carrito vacío -->
+                        <div th:if="${carritoVacio}" class="text-center py-5">
+                            <div class="mb-4">
+                                <i class="fas fa-shopping-cart fa-5x text-muted"></i>
+                            </div>
+                            <h4 class="text-muted">Tu carrito está vacío</h4>
+                            <p class="text-muted">¡Agrega algunas deliciosas pizzas para comenzar!</p>
+                            <a th:href="@{/}" class="btn btn-primary btn-lg">
+                                <i class="fas fa-pizza-slice"></i> Ver Menú
+                            </a>
+                        </div>
+
+                        <!-- Items del carrito -->
+                        <div th:if="${!carritoVacio}">
+                            <h4 class="mb-4">Items en tu carrito:</h4>
+                            
+                            <div th:each="item : ${itemsCarrito}" class="item-carrito border rounded p-3 mb-3">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 text-center">
+                                        <img th:src="${item.opcion.imagen}" th:alt="${item.opcion.nombre}" 
+                                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iI2RkZCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiM5OTkiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj7wn42VPC90ZXh0Pjwvc3ZnPg=='">
+                                    </div>
+                                    <div class="col-md-5">
+                                        <h5 th:text="${item.opcion.nombre}" class="mb-1"></h5>
+                                        <p class="text-muted mb-1">
+                                            Tamaño: <span th:text="${item.tamano}" class="text-capitalize"></span>
+                                        </p>
+                                        <form th:action="@{/carrito/actualizar}" method="post" class="d-flex align-items-center">
+                                            <input type="hidden" name="itemId" th:value="${item.id}" />
+                                            <label for="cantidad" class="form-label me-2">Cantidad:</label>
+                                            <input type="number" name="cantidad" th:value="${item.cantidad}" class="form-control form-control-sm" style="width: 70px;" min="1" />
+                                            <button type="submit" class="btn btn-primary btn-sm ms-2">Actualizar</button>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <p class="mb-1 text-muted">Precio unitario:</p>
+                                        <strong th:text="'$' + ${#numbers.formatInteger(item.precioUnitario, 0, 'COMMA')}"></strong>
+                                    </div>
+                                    <div class="col-md-2 text-center">
+                                        <p class="mb-1 text-muted">Subtotal:</p>
+                                        <h5 class="text-success mb-0" th:text="'$' + ${#numbers.formatInteger(item.subtotal, 0, 'COMMA')}"></h5>
+                                    </div>
+                                    <div class="col-md-1 text-center">
+                                        <form th:action="@{/carrito/eliminar}" method="post" style="display: inline;">
+                                            <input type="hidden" name="itemId" th:value="${item.id}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm btn-eliminar" 
+                                                    onclick="return confirm('¿Estás seguro de eliminar este item?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Total y acciones -->
+                            <div class="border-top pt-4 mt-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <form th:action="@{/carrito/vaciar}" method="post" style="display: inline;">
+                                            <button type="submit" class="btn btn-outline-warning" 
+                                                    onclick="return confirm('¿Estás seguro de vaciar todo el carrito?')">
+                                                <i class="fas fa-trash-alt"></i> Vaciar Carrito
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <h4>Total: <span class="text-success" th:text="'$' + ${#numbers.formatInteger(totalCarrito, 0, 'COMMA')}"></span></h4>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Información de autenticación -->
+            <div th:if="${session.usuarioEmail == null}" class="alert alert-info mt-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>¡Inicia sesión para confirmar tu pedido!</strong>
+                        <p class="mb-0 mt-1">Necesitas una cuenta para procesar tu orden.</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <a th:href="@{/login}" class="btn btn-primary me-2">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                        </a>
+                        <a th:href="@{/registro}" class="btn btn-outline-primary">
+                            <i class="fas fa-user-plus"></i> Registrarse
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div th:if="${session.usuarioEmail != null}" class="alert alert-success mt-4">
+                <i class="fas fa-user-check"></i>
+                <strong>Sesión iniciada como:</strong> <span th:text="${session.usuarioEmail}"></span>
+            </div>
+            
+            <!-- Botones de acción -->
+            <div class="d-grid gap-2 mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a th:href="@{/}" class="btn btn-secondary btn-lg w-100">
+                            <i class="fas fa-arrow-left"></i> Seguir Comprando
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Botón de confirmar si está autenticado -->
+                        <a th:if="${session.usuarioEmail != null}" th:href="@{/pago}" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-check"></i> Confirmar Pedido
+                        </a>
+                        
+                        <!-- Botón de login si no está autenticado -->
+                        <a th:if="${session.usuarioEmail == null}" th:href="@{/login}" class="btn btn-warning btn-lg w-100">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión para Confirmar
+                        </a>
+                    </div>
+                </div>
+            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer Informativo -->
+    <footer class="footer">
+        <div class="footer-content">
+            <!-- Información del Restaurante -->
+            <div class="footer-section">
+                <h3>Pizza Exploit</h3>
+                <p>Desde 2025, ofrecemos las mejores pizzas artesanales de la ciudad con ingredientes frescos y recetas tradicionales que han pasado de generación en generación.</p>
+                <p><strong>Especialidades:</strong></p>
+                <ul>
+                    <li>• Pizzas artesanales</li>
+                    <li>• Masa fresca diaria</li>
+                    <li>• Ingredientes premium</li>
+                    <li>• Recetas familiares</li>
+                </ul>
+            </div>
+
+            <!-- Información de Contacto -->
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <div class="contact-item">
+                    <p>Calle 78B No. 72A - 220, Barrio Altamira<br>Medellín, Colombia</p>
+                </div>
+                <div class="contact-item">
+                    <span>📞</span>
+                    <p>+57 (604) 123-4567</p>
+                </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <p>+57 300 123 4567</p>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <p><a href="mailto:info@pizzas.com">info@pizzas.com</a></p>
+                </div>
+            </div>
+
+            <!-- Horarios de Atención -->
+            <div class="footer-section">
+                <h3>🕒 Horarios</h3>
+                <ul>
+                    <li><strong>Lunes - Jueves:</strong><br>11:00 AM - 10:00 PM</li>
+                    <li><strong>Viernes - Sábado:</strong><br>11:00 AM - 11:00 PM</li>
+                    <li><strong>Domingo:</strong><br>12:00 PM - 9:00 PM</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>🚚 Domicilios:</strong></p>
+                <p>Disponibles en toda la ciudad<br>Tiempo estimado: 30-45 min</p>
+            </div>
+
+            <!-- Redes Sociales y Enlaces -->
+            <div class="footer-section">
+                <h3>🌐 Síguenos</h3>
+                <p>Mantente conectado con nosotros y no te pierdas nuestras promociones especiales:</p>
+                <div class="social-links">
+                    <a href="https://facebook.com/" title="Facebook">📘</a>
+                    <a href="https://instagram.com/" title="Instagram">📷</a>
+                    <a href="https://twitter.com/" title="Twitter">🐦</a>
+                    <a href="https://whatsapp.com/" title="WhatsApp">💬</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie del Footer -->
+        <div class="footer-bottom">
+            <p>&copy; 2025 Pizza Exploit. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
