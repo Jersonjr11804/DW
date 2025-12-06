@@ -5,6 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.prueba3.pagina3.Model.Opcion;
 import com.prueba3.pagina3.Service.CarritoService;
 import com.prueba3.pagina3.Service.OpcionService;
@@ -12,6 +15,7 @@ import com.prueba3.pagina3.Service.OpcionService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
+@Tag(name = "Opciones", description = "Gestión de opciones, carrito y usuarios")
 public class OpcionController {
 
     private final OpcionService opcionService;
@@ -23,6 +27,7 @@ public class OpcionController {
     }
 
     @GetMapping("/") // URL final: /opciones/inicio
+    @Operation(summary = "Mostrar opciones", description = "Lista las pizzas disponibles y cantidad en carrito")
     public String mostrarOpciones(Model model, HttpSession session) {
         model.addAttribute("opciones", opcionService.listarOpciones());
 
@@ -34,6 +39,7 @@ public class OpcionController {
 
 
     @PostMapping("/agregar")
+    @Operation(summary = "Agregar al carrito", description = "Agrega una pizza al carrito del usuario (o invitado)")
     public String agregarAlCarrito(@RequestParam Long opcionId, @RequestParam String tamano, @RequestParam int cantidad, RedirectAttributes redirectAttributes, HttpSession session) {
         Opcion opcion = opcionService.obtenerPorId(opcionId);
         if (opcion != null && cantidad > 0) {
@@ -48,6 +54,7 @@ public class OpcionController {
     }
     
     @GetMapping("/carrito")
+    @Operation(summary = "Mostrar carrito", description = "Muestra los items del carrito y total")
     public String mostrarCarrito(Model model, HttpSession session) {
         String usuarioEmail = (String) session.getAttribute("usuarioEmail");
         model.addAttribute("itemsCarrito", carritoService.obtenerItems(usuarioEmail));
@@ -94,6 +101,7 @@ public class OpcionController {
     }
 
     @PostMapping("/registro")
+    @Operation(summary = "Registrar usuario", description = "Procesa el registro de un nuevo usuario")
     public String procesarRegistro(
             @RequestParam String nombre,
             @RequestParam String apellidos,
@@ -134,6 +142,7 @@ public class OpcionController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Login de usuario", description = "Valida credenciales e inicia sesión")
     public String procesarLogin(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
@@ -195,6 +204,7 @@ public class OpcionController {
     }
 
     @GetMapping("/pago")
+    @Operation(summary = "Mostrar pago", description = "Muestra la pantalla de pago con los items del carrito")
     public String mostrarPago(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         String usuarioEmail = (String) session.getAttribute("usuarioEmail");
         if (usuarioEmail == null) {
@@ -214,6 +224,7 @@ public class OpcionController {
     }
 
     @PostMapping("/pago")
+    @Operation(summary = "Procesar pago", description = "Procesa el pago y retorna la vista de resultado")
     public String procesarPago(
             @RequestParam("metodo") String metodo,
             @RequestParam(value = "numeroTarjeta", required = false) String numeroTarjeta,
@@ -254,6 +265,7 @@ public class OpcionController {
     
     
     @GetMapping("/usuarios")
+    @Operation(summary = "Ver usuarios", description = "Lista los usuarios registrados")
     public String verUsuarios(Model model) {
         java.util.List<java.util.Map<String, String>> usuarios = opcionService.obtenerTodosLosUsuarios();
         model.addAttribute("usuarios", usuarios);

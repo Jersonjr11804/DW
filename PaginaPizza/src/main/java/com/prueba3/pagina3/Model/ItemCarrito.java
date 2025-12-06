@@ -4,31 +4,41 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "item_carrito")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(name = "ItemCarrito", description = "Item agregado al carrito por un usuario")
 public class ItemCarrito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador del item", example = "10")
     private Long id;
     @ManyToOne
     @JoinColumn(name = "opcion_id", nullable = false)
+    @Schema(description = "Opción/pizza asociada")
     private Opcion opcion;
     @Column(nullable = false)
+    @Schema(description = "Nombre de la pizza", example = "Margarita")
     private String nombre;
     @Column(nullable = false)
+    @Schema(description = "Tamaño escogido", example = "mediana")
     private String tamano;
     @Column(nullable = false)
+    @Schema(description = "Cantidad solicitada", example = "2")
     private int cantidad;
     @Column(nullable = false)
+    @Schema(description = "Precio unitario según tamaño", example = "8.50")
     private double precioUnitario;
     @Column(nullable = false)
+    @Schema(description = "Subtotal (precioUnitario * cantidad)", example = "17.0")
     private double subtotal;
 
     @Column(name = "usuario_email")
+    @Schema(description = "Email del usuario dueño del carrito", example = "juan@example.com")
     private String usuarioEmail;
 
   

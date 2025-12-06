@@ -2,26 +2,36 @@ package com.prueba3.pagina3.Model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
+@Schema(name = "Usermodel", description = "Entidad que representa a un usuario registrado")
 public class Usermodel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador del usuario", example = "5")
     private Long id;
 
+    @Schema(description = "Nombre(s) del usuario", example = "Juan")
     private String nombre;
+    @Schema(description = "Apellidos del usuario", example = "Pérez")
     private String apellidos;
+    @Schema(description = "Teléfono de contacto", example = "+34123456789")
     private String telefono;
+    @Schema(description = "Dirección del usuario", example = "Calle Falsa 123")
     private String direccion;
 
     @Column(nullable = false, unique = true)
+    @Schema(description = "Email único del usuario", example = "juan@example.com")
     private String email;
 
     @Column(nullable = false)
+    @Schema(description = "Contraseña (oculta en documentación)", hidden = true)
     private String password;
 
     @Column(name = "created_at")
+    @Schema(description = "Fecha de creación del registro")
     private LocalDateTime createdAt;
 
     @PrePersist

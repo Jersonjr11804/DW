@@ -4,17 +4,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
+@Schema(name = "Opcion", description = "Representa una pizza/ opción disponible")
 public class Opcion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Identificador único", example = "1")
     private Long id;
+    @Schema(description = "Nombre de la pizza", example = "Margarita")
     private String nombre;
+    @Schema(description = "Descripción breve", example = "Pizza con tomate y queso")
     private String descripcion;
+    @Schema(description = "Precio tamaño pequeña", example = "5.99")
     private double precioPequena;
+    @Schema(description = "Precio tamaño mediana", example = "8.50")
     private double precioMediana;
+    @Schema(description = "Precio tamaño grande", example = "11.00")
     private double precioGrande;
+    @Schema(description = "Nombre o ruta de la imagen", example = "margarita.jpg")
     private String imagen;
 
     public Opcion() {}
