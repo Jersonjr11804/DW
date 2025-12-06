@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seleccionar Pizza - Pizzería</title>
+    <link rel="stylesheet" th:href="@{/style/seleccion.css}">
+</head>
+
+<body>
+    
+    <!-- Incluir el navbar -->
+    <div th:replace="fragment/navbar :: navbar"></div>
+</body>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${mensaje}" class="mensaje success" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="mensaje error" th:text="${error}"></div>
+
+    <div class="contenedor">
+        <div class="opcion" th:each="opcion : ${opciones}">
+            <img th:src="${opcion.imagen}" th:alt="${opcion.nombre}" 
+                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlbiBubyBkaXNwb25pYmxlPC90ZXh0Pjwvc3ZnPg=='">
+            
+            <h3 th:text="${opcion.nombre}"></h3>
+            
+            <!-- Descripción de la pizza -->
+            <p class="descripcion" th:text="${opcion.descripcion}"></p>
+            
+            <div class="precios">
+                <div class="precio-item">
+                    <span>Pequeña (4 porciones):</span>
+                    <strong th:text="'$' + ${#numbers.formatInteger(opcion.precioPequena, 0, 'COMMA')}"></strong>
+                </div>
+                <div class="precio-item">
+                    <span>Mediana (6 porciones):</span>
+                    <strong th:text="'$' + ${#numbers.formatInteger(opcion.precioMediana, 0, 'COMMA')}"></strong>
+                </div>
+                <div class="precio-item">
+                    <span>Grande (8 porciones):</span>
+                    <strong th:text="'$' + ${#numbers.formatInteger(opcion.precioGrande, 0, 'COMMA')}"></strong>
+                </div>
+            </div>
+
+            <form th:action="@{/agregar}" method="post">
+                <input type="hidden" name="opcionId" th:value="${opcion.id}">
+                
+                <div class="form-group">
+                    <label for="tamano">Tamaño:</label>
+                    <select name="tamano" required>
+                        <option value="">Seleccionar tamaño</option>
+                        <option value="pequena">Pequeña</option>
+                        <option value="mediana">Mediana</option>
+                        <option value="grande">Grande</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cantidad">Cantidad:</label>
+                    <input type="number" name="cantidad" min="1" max="10" value="1" required>
+                </div>
+
+                <button type="submit">Agregar al Carrito</button>
+            </form>
+        </div>
+    </div>
+
+    <th:block th:replace="fragment/footer :: footer"></th:block>
+</body>
+</html>
