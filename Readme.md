@@ -8,6 +8,7 @@
 5. [Servicios (Services)](#servicios-services)
 6. [Controladores (Controllers)](#controladores-controllers)
 7. [Configuración y Recursos](#configuración-y-recursos)
+8. [doapi](#http://localhost:8080/swagger-ui/index.html#/)
 
 ---
 
@@ -1162,6 +1163,12 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=false
 server.port=8080
 ```
+
+## diagrma er
+##(https://img.plantuml.biz/plantuml/png/fLF1IiD04BtlLoov249-eAU25H4KYzApJBAZBcnsucOMqQR_xYGsoKPhAVGIaZTltxmtiras385ZvPH2pvO_zQQ942pfhTBwqXgzq7VaN-KZp-NXgIe22lZ4mVOmLc1T2jJGD1yKp8JjHl67khJaJzQk0mf_ZUyHFKZ1K2mSZeLxD1OE5Mu2U8CJFXcuPQok80JBfoTagC1JYfGWQWQwezRps7RZBVUpImmriM1YS2aMVqPyFP_SP78jkSn__bwmVEiYhu0xhJ_YA1irT4XsXK9rU5Jzh6JIwa8_eeDkoTYeuIgrRPxJTeYrq5b0SFOBChM7zeIvGU6L96xGOwRcfHtbUTiEjqc8rByzMvEfTCF7UB_CfSU4k6-hbkYD_1tV)
+
+
+
 
 #### Configuraciones Comunes:
 
