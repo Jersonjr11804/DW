@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Pagina3Application<pagina3>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.prueba3.pagina3.Pagina3Application",
+            "projectName": "pagina3",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
